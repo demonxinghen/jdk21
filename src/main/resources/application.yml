@@ -1,0 +1,42 @@
+server:
+  port: 80
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    #operations-sorter: order
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      display-name: '测试'
+      paths-to-match: '/test/**'
+      packages-to-scan: com.example.jdk21.controller
+    - group: 'user'
+      display-name: '用户'
+      paths-to-match: '/user/**'
+      packages-to-scan: com.example.jdk21.controller
+  default-flat-param-object: true
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+    swagger-model-name: 实体类列表
+  documents:
+    - name: 标题1
+      locations: classpath:markdown/*
+      group: 测试
+    - name: 标题2
+      locations: classpath:markdown1/*
+      group: 用户
+  basic:
+    enable: false
+    username: abc
+    password: 123
