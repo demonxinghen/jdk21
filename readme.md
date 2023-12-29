@@ -1,3 +1,8 @@
+### 扩展
+CustomUserDetails实现UserDetails(只有账户和密码),扩展业务需要的其他属性
+
+CustomUserDetailsServiceImpl实现UserDetailsService,用于查找数据库获取用户
+
 #### 项目启动
 配置WebSecurityConfig的SecurityFilterChain，执行httpSecurity.with(new UsernamePasswordLoginConfig<>(authenticationSuccessHandler(), authenticationFailureHandler()), Customizer.withDefaults());
 

@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(UserLoginPojo pojo) {
-        User user = userRepository.findByUsername(pojo.getUsername());
+        User user = userRepository.findByUsernameAndDeletedIsFalse(pojo.getUsername());
         if (pojo.getPassword().equals(user.getPassword())) {
             return user;
         }

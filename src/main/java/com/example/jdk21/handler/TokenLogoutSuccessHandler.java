@@ -15,7 +15,7 @@ import java.io.IOException;
  * 注销处理器
  */
 @Slf4j
-public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
+public class TokenLogoutSuccessHandler implements LogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.info("Logout Success");

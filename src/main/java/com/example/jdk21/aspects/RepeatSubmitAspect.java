@@ -44,7 +44,7 @@ public class RepeatSubmitAspect {
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
         sb.append(path).append(":").append(method.getName()).append(":").append(Arrays.toString(joinPoint.getArgs()));
         if (UserUtil.get() != null) {
-            sb.append(":").append(UserUtil.get().getToken());
+            //sb.append(":").append(UserUtil.get().getToken());
         }
         Boolean absent = redisTemplate.opsForValue().setIfAbsent(sb.toString(), "", repeatSubmit.lockTime(), TimeUnit.SECONDS);
         if (Boolean.FALSE.equals(absent)) {

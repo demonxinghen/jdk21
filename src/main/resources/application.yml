@@ -66,3 +66,8 @@ knife4j:
     enable: false
     username: abc
     password: 123
+
+logging:
+  level:
+    root: info
+    sql: debug

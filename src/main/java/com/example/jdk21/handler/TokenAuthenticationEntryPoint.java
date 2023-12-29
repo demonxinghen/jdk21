@@ -24,7 +24,6 @@ public class TokenAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
         response.setStatus(HttpStatus.OK.value());
-        log.error("未获取到用户信息，请登录后重试");
         response.getWriter().write(JSON.toJSONString(Result.failure("未获取到用户信息，请登录后重试")));
     }
 }

@@ -1,8 +1,8 @@
 package com.example.jdk21.model;
 
+import com.alibaba.fastjson2.annotation.JSONField;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -17,9 +17,7 @@ public class User extends BaseModel{
 
     private String username;
 
+    @JSONField(serialize = false)
     @Hidden
     private String password;
-
-    @Transient
-    private String token;
 }

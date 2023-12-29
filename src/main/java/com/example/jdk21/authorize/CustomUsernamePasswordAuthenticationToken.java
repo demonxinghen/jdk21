@@ -29,7 +29,7 @@ public class CustomUsernamePasswordAuthenticationToken extends AbstractAuthentic
     public static CustomUsernamePasswordAuthenticationToken authenticated(CustomUserDetails userDetails) {
         CustomUsernamePasswordAuthenticationToken authenticationToken = new CustomUsernamePasswordAuthenticationToken(userDetails.getAuthorities());
         // 认证成功后，将密码清除
-        userDetails.getUser().setPassword(null);
+        userDetails.setPassword(null);
         // 设置为已认证状态
         authenticationToken.setAuthenticated(Boolean.TRUE);
         // 用户详情为userDetails

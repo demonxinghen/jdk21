@@ -37,7 +37,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         }
         UsernamePasswordAuthenticationToken authenticatedToken = UsernamePasswordAuthenticationToken.authenticated(unauthenticatedToken.getPrincipal(), unauthenticatedToken.getCredentials(), userDetails.getAuthorities());
         String token = tokenManager.generateToken(authenticatedToken);
-        userDetails.getUser().setToken(token);
         userDetails.setToken(token);
         authenticatedToken.setDetails(userDetails);
         return authenticatedToken;

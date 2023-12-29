@@ -2,6 +2,7 @@ package com.example.jdk21.authorize;
 
 import com.example.jdk21.model.User;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,18 +16,16 @@ import java.util.stream.Collectors;
  * @author admin
  * @date 2023/12/27 15:50
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class CustomUserDetails implements UserDetails {
-
-    private User user;
+public class CustomUserDetails extends User implements UserDetails {
 
     private List<String> permissions;
 
     private String token;
 
-    public CustomUserDetails(User user, List<String> permissions) {
-        this.user = user;
+    public CustomUserDetails(List<String> permissions) {
         this.permissions = permissions;
     }
 
@@ -41,12 +40,12 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return super.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return super.getUsername();
     }
 
     @Override

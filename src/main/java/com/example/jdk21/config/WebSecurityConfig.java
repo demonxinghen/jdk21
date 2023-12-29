@@ -68,8 +68,8 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public CustomLogoutSuccessHandler logoutSuccessHandler(){
-        return new CustomLogoutSuccessHandler();
+    public TokenLogoutSuccessHandler logoutSuccessHandler(){
+        return new TokenLogoutSuccessHandler();
     }
 
     @Bean
