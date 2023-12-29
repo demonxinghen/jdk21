@@ -1,6 +1,8 @@
 package com.example.jdk21.model;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,5 +17,9 @@ public class User extends BaseModel{
 
     private String username;
 
+    @Hidden
     private String password;
+
+    @Transient
+    private String token;
 }

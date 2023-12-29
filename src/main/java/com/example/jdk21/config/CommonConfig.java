@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSONWriter;
 import com.alibaba.fastjson2.support.config.FastJsonConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 import java.nio.charset.StandardCharsets;
 
@@ -27,5 +28,10 @@ public class CommonConfig {
         );
         config.setCharset(StandardCharsets.UTF_8);
         return config;
+    }
+
+    @Bean
+    public SpelExpressionParser spelExpressionParser() {
+        return new SpelExpressionParser();
     }
 }

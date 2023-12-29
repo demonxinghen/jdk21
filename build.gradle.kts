@@ -43,6 +43,10 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("cn.hutool:hutool-all:5.8.24")
+    implementation("com.auth0:java-jwt:4.4.0")
+    implementation("com.github.ben-manes.caffeine:caffeine:3.1.8")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation("org.apache.commons:commons-collections4:4.4")
 }
 
 tasks.withType<Test> {

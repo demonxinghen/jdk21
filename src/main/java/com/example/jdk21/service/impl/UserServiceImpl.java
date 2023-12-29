@@ -1,6 +1,7 @@
 package com.example.jdk21.service.impl;
 
 import com.example.jdk21.model.User;
+import com.example.jdk21.pojo.UserLoginPojo;
 import com.example.jdk21.repository.UserRepository;
 import com.example.jdk21.service.UserService;
 import jakarta.annotation.Resource;
@@ -23,5 +24,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteById(String id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public User login(UserLoginPojo pojo) {
+        User user = userRepository.findByUsername(pojo.getUsername());
+        if (pojo.getPassword().equals(user.getPassword())) {
+            return user;
+        }
+        return null;
     }
 }

@@ -13,19 +13,19 @@ import org.springframework.transaction.annotation.Transactional;
  * @date 2023/12/27 17:02
  */
 @NoRepositoryBean
-public interface BaseRepository<T extends BaseModel, ID> extends JpaRepository<T, ID> {
+public interface BaseRepository<T extends BaseModel> extends JpaRepository<T, String> {
 
     @Query("update #{#entityName} set deleted = true where id = :id and deleted = false")
     @Transactional
     @Modifying
     @Override
-    void deleteById(@Param("id") ID id);
+    void deleteById(@Param("id") String id);
 
     @Query("update #{#entityName} set deleted = true where id in :ids and deleted = false")
     @Transactional
     @Modifying
     @Override
-    void deleteAllById(@Param("ids") Iterable<? extends ID> ids);
+    void deleteAllById(@Param("ids") Iterable<? extends String> ids);
 
     // @Query("update #{#entityName} set deleted = 1 where id = #{entity.id} and deleted = false")
     // @Transactional

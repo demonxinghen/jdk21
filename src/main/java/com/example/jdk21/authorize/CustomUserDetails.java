@@ -19,8 +19,11 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
-    User user;
-    List<String> permissions;
+    private User user;
+
+    private List<String> permissions;
+
+    private String token;
 
     public CustomUserDetails(User user, List<String> permissions) {
         this.user = user;

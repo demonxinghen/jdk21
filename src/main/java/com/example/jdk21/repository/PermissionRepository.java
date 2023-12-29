@@ -1,6 +1,6 @@
 package com.example.jdk21.repository;
 
-import com.example.jdk21.model.User;
+import com.example.jdk21.model.Permission;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
  * @date 2023/12/27 15:56
  */
 @Repository
-public interface UserRepository extends BaseRepository<User> {
+public interface PermissionRepository extends BaseRepository<Permission> {
 
-    User findByUsername(String username);
 }
