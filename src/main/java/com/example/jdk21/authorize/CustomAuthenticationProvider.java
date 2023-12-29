@@ -2,6 +2,7 @@ package com.example.jdk21.authorize;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,21 +28,23 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        CustomUsernamePasswordAuthenticationToken authenticationToken = (CustomUsernamePasswordAuthenticationToken) authentication;
-        String username = authenticationToken.getPrincipal();
-        String password = authenticationToken.getCredentials();
+        UsernamePasswordAuthenticationToken unauthenticatedToken = (UsernamePasswordAuthenticationToken) authentication;
+        String username = (String) unauthenticatedToken.getPrincipal();
+        String password = (String) unauthenticatedToken.getCredentials();
         CustomUserDetails userDetails = userDetailsService.loadUserByUsername(username);
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new BadCredentialsException("密码错误");
         }
-        CustomUsernamePasswordAuthenticationToken authenticationToken1 = CustomUsernamePasswordAuthenticationToken.customUsernamePasswordAuthenticationToken(userDetails);
-        String token = tokenManager.generateToken(authenticationToken1);
-        ((CustomUserDetails) authenticationToken1.getDetails()).setToken(token);
-        return authenticationToken1;
+        UsernamePasswordAuthenticationToken authenticatedToken = UsernamePasswordAuthenticationToken.authenticated(unauthenticatedToken.getPrincipal(), unauthenticatedToken.getCredentials(), userDetails.getAuthorities());
+        String token = tokenManager.generateToken(authenticatedToken);
+        userDetails.getUser().setToken(token);
+        userDetails.setToken(token);
+        authenticatedToken.setDetails(userDetails);
+        return authenticatedToken;
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return CustomUsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
+        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
     }
 }

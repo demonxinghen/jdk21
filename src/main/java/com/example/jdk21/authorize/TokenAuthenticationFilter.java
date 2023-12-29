@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
@@ -46,7 +47,7 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
         if (StringUtils.isBlank(userLoginPojo.getPassword())) {
             throw new BadCredentialsException("密码不能为空");
         }
-        CustomUsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = CustomUsernamePasswordAuthenticationToken.customUsernamePasswordUnAuthenticationToken(userLoginPojo.getUsername(), userLoginPojo.getPassword());
-        return getAuthenticationManager().authenticate(usernamePasswordAuthenticationToken);
+        UsernamePasswordAuthenticationToken unauthenticatedToken = UsernamePasswordAuthenticationToken.unauthenticated(userLoginPojo.getUsername(), userLoginPojo.getPassword());
+        return getAuthenticationManager().authenticate(unauthenticatedToken);
     }
 }

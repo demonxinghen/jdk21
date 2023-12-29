@@ -8,6 +8,7 @@ import java.util.Collection;
 /**
  * @author admin
  * @date 2023/12/28 16:27
+ * 自定义的AbstractAuthenticationToken,可替代UsernamePasswordAuthenticationToken
  */
 public class CustomUsernamePasswordAuthenticationToken extends AbstractAuthenticationToken {
 
@@ -16,7 +17,7 @@ public class CustomUsernamePasswordAuthenticationToken extends AbstractAuthentic
     private String password;
 
     // 未认证时
-    public static CustomUsernamePasswordAuthenticationToken customUsernamePasswordUnAuthenticationToken(String username, String password) {
+    public static CustomUsernamePasswordAuthenticationToken unauthenticated(String username, String password) {
         CustomUsernamePasswordAuthenticationToken token = new CustomUsernamePasswordAuthenticationToken(null);
         token.username = username;
         token.password = password;
@@ -25,7 +26,7 @@ public class CustomUsernamePasswordAuthenticationToken extends AbstractAuthentic
     }
 
     // 认证成功后
-    public static CustomUsernamePasswordAuthenticationToken customUsernamePasswordAuthenticationToken(CustomUserDetails userDetails) {
+    public static CustomUsernamePasswordAuthenticationToken authenticated(CustomUserDetails userDetails) {
         CustomUsernamePasswordAuthenticationToken authenticationToken = new CustomUsernamePasswordAuthenticationToken(userDetails.getAuthorities());
         // 认证成功后，将密码清除
         userDetails.getUser().setPassword(null);

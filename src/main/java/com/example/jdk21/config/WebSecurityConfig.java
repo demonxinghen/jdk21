@@ -43,7 +43,7 @@ public class WebSecurityConfig {
         httpSecurity.formLogin(AbstractHttpConfigurer::disable);
         httpSecurity.httpBasic(AbstractHttpConfigurer::disable);
 
-        httpSecurity.authenticationProvider(authenticationProvider());
+        //httpSecurity.authenticationProvider(authenticationProvider());
         httpSecurity.with(new UsernamePasswordLoginConfig<>(authenticationSuccessHandler(), authenticationFailureHandler()), Customizer.withDefaults());
 
         httpSecurity.logout((logout) -> logout.logoutUrl("/user/logout").logoutSuccessHandler(logoutSuccessHandler()));

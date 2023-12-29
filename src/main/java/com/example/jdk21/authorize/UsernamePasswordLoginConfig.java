@@ -30,6 +30,10 @@ public class UsernamePasswordLoginConfig<H extends HttpSecurityBuilder<H>> exten
         return new AntPathRequestMatcher(loginProcessingUrl, "POST");
     }
 
+    /**
+     * 给filter配置各种回调
+     * @param http
+     */
     @Override
     public void configure(H http) {
         AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
@@ -39,11 +43,13 @@ public class UsernamePasswordLoginConfig<H extends HttpSecurityBuilder<H>> exten
         authenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
 
         http.addFilterAfter(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
     }
 
     @Override
     public void init(H http) throws Exception {
+        // 父类里updateAuthenticationDefaults配置登录处理地址，失败跳转地址，注销成功跳转地址。
+        // updateAccessDefaults主要是对 loginPage、loginProcessingUrl、failureUrl 进行 permitAll 设置（如果用户配置了 permitAll 的话）。
+        // registerDefaultAuthenticationEntryPoint注册异常的处理器。
         super.init(http);
     }
 }

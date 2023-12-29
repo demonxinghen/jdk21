@@ -1,6 +1,20 @@
-登录过程：
+#### 项目启动
+配置WebSecurityConfig的SecurityFilterChain，执行httpSecurity.with(new UsernamePasswordLoginConfig<>(authenticationSuccessHandler(), authenticationFailureHandler()), Customizer.withDefaults());
+
+### 登录过程
 
 访问/user/login
 
-进入WebSecurityConfig中的filterChain配置的authenticationProvider
+进入UsernamePasswordLoginConfig配置的TokenAuthenticationFilter,执行attemptAuthentication方法,再执行getAuthenticationManager().authenticate(AbstractAuthenticationToken),而后进入CustomAuthenticationProvider#authenticate方法
+```text
+TokenAuthenticationFilter#attemptAuthentication里调用getAuthenticationManager().authenticate(Authentication)和CustomAuthenticationProvider#authenticate里需要传入或者返回Authentication,此处可以自定义一个AbstractAuthenticationToken,来替代本例中默认的UsernamePasswordAuthenticationToken,可以仿UsernamePasswordAuthenticationToken,同时在和CustomAuthenticationProvider#supports需要传入这个自定义的AbstractAuthenticationToken
+```
+登录成功进入TokenAuthenticationSuccessHandler
 
+登录失败进入TokenAuthenticationFailureHandler,处理BadCredentialsException异常
+
+登录失败进入TokenAuthenticationEntryPoint,处理非BadCredentialsException异常
+
+注销进入CustomLogoutSuccessHandler
+
+权限不足进入TokenAccessDeniedHandler
