@@ -4,7 +4,6 @@ import com.example.jdk21.authorize.CustomAuthenticationProvider;
 import com.example.jdk21.authorize.CustomUserDetailsServiceImpl;
 import com.example.jdk21.authorize.TokenManager;
 import com.example.jdk21.authorize.UsernamePasswordLoginConfig;
-import com.example.jdk21.filter.NormalRequestAuthenticationFilter;
 import com.example.jdk21.handler.*;
 import com.example.jdk21.utils.RedisUtil;
 import jakarta.annotation.Resource;
@@ -17,7 +16,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.context.SecurityContextHolderFilter;
 
 /**
  * @author admin
@@ -47,54 +45,55 @@ public class WebSecurityConfig {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize ->
-                        authorize.requestMatchers("/v3/api-docs/**", "/webjars/**", "/doc.html", "/user/login").permitAll()
-                                .anyRequest().authenticated()
+                        //authorize.requestMatchers(CommonConstant.INTERCEPT_IGNORE_URLS).permitAll()
+                        //        .anyRequest().authenticated()
+                        authorize.anyRequest().permitAll()
                 );
         httpSecurity.formLogin(AbstractHttpConfigurer::disable);
         httpSecurity.httpBasic(AbstractHttpConfigurer::disable);
 
         //httpSecurity.authenticationProvider(authenticationProvider());
         httpSecurity.with(new UsernamePasswordLoginConfig<>(authenticationSuccessHandler(), authenticationFailureHandler()), Customizer.withDefaults());
-        httpSecurity.addFilterAfter(normalRequestAuthenticationFilter(), SecurityContextHolderFilter.class);
+        //httpSecurity.addFilterAfter(normalRequestAuthenticationFilter(), SecurityContextHolderFilter.class);
 
         httpSecurity.logout((logout) -> logout.logoutUrl("/user/logout").logoutSuccessHandler(logoutSuccessHandler()));
 
-        httpSecurity.exceptionHandling( e -> e.authenticationEntryPoint(authenticationEntryPoint()).accessDeniedHandler(accessDeniedHandler()));
+        httpSecurity.exceptionHandling(e -> e.authenticationEntryPoint(authenticationEntryPoint()).accessDeniedHandler(accessDeniedHandler()));
         return httpSecurity.build();
     }
 
-    @Bean
-    public NormalRequestAuthenticationFilter normalRequestAuthenticationFilter(){
-        return new NormalRequestAuthenticationFilter(redisUtil);
-    }
+    //@Bean
+    //public NormalRequestAuthenticationFilter normalRequestAuthenticationFilter() {
+    //    return new NormalRequestAuthenticationFilter(redisUtil);
+    //}
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         return new CustomAuthenticationProvider(userDetailsService, bCryptPasswordEncoder(), tokenManager);
     }
 
     @Bean
-    public TokenAccessDeniedHandler accessDeniedHandler(){
+    public TokenAccessDeniedHandler accessDeniedHandler() {
         return new TokenAccessDeniedHandler();
     }
 
     @Bean
-    public TokenAuthenticationEntryPoint authenticationEntryPoint(){
+    public TokenAuthenticationEntryPoint authenticationEntryPoint() {
         return new TokenAuthenticationEntryPoint();
     }
 
     @Bean
-    public TokenLogoutSuccessHandler logoutSuccessHandler(){
+    public TokenLogoutSuccessHandler logoutSuccessHandler() {
         return new TokenLogoutSuccessHandler();
     }
 
     @Bean
-    public TokenAuthenticationSuccessHandler authenticationSuccessHandler(){
+    public TokenAuthenticationSuccessHandler authenticationSuccessHandler() {
         return new TokenAuthenticationSuccessHandler();
     }
 
     @Bean
-    public TokenAuthenticationFailureHandler authenticationFailureHandler(){
+    public TokenAuthenticationFailureHandler authenticationFailureHandler() {
         return new TokenAuthenticationFailureHandler();
     }
 
@@ -105,7 +104,7 @@ public class WebSecurityConfig {
      */
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/ignore1");
+        return (web) -> web.ignoring().requestMatchers("/favicon.ico");
     }
 
     /**

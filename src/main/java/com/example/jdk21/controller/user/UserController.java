@@ -5,6 +5,7 @@ import com.example.jdk21.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -19,6 +20,7 @@ public class UserController {
     @Resource
     private UserService userService;
 
+    @PreAuthorize("hasAuthority('1')")
     @GetMapping("/{id}")
     @Operation(summary = "详情")
     public User detail(@PathVariable("id") String id) {

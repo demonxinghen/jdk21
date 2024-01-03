@@ -8,7 +8,6 @@ class Jdk21ApplicationTests {
 
     @Test
     void contextLoads() {
-        System.out.println("心好累");
     }
 
 }

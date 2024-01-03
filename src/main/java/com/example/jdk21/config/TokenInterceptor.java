@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * @author admin
  * @date 2023/12/27 14:53
+ * 这里也可以实现token校验,本例中已经在NormalRequestAuthenticationFilter做了token校验
  */
 @Slf4j
 @Component
