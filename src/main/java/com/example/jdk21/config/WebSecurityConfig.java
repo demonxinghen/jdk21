@@ -4,6 +4,7 @@ import com.example.jdk21.authorize.CustomAuthenticationProvider;
 import com.example.jdk21.authorize.CustomUserDetailsServiceImpl;
 import com.example.jdk21.authorize.TokenManager;
 import com.example.jdk21.authorize.UsernamePasswordLoginConfig;
+import com.example.jdk21.filter.NormalRequestAuthenticationFilter;
 import com.example.jdk21.handler.*;
 import com.example.jdk21.utils.RedisUtil;
 import jakarta.annotation.Resource;
@@ -16,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.context.SecurityContextHolderFilter;
 
 /**
  * @author admin
@@ -54,7 +56,7 @@ public class WebSecurityConfig {
 
         //httpSecurity.authenticationProvider(authenticationProvider());
         httpSecurity.with(new UsernamePasswordLoginConfig<>(authenticationSuccessHandler(), authenticationFailureHandler()), Customizer.withDefaults());
-        //httpSecurity.addFilterAfter(normalRequestAuthenticationFilter(), SecurityContextHolderFilter.class);
+        httpSecurity.addFilterAfter(normalRequestAuthenticationFilter(), SecurityContextHolderFilter.class);
 
         httpSecurity.logout((logout) -> logout.logoutUrl("/user/logout").logoutSuccessHandler(logoutSuccessHandler()));
 
@@ -62,10 +64,10 @@ public class WebSecurityConfig {
         return httpSecurity.build();
     }
 
-    //@Bean
-    //public NormalRequestAuthenticationFilter normalRequestAuthenticationFilter() {
-    //    return new NormalRequestAuthenticationFilter(redisUtil);
-    //}
+    @Bean
+    public NormalRequestAuthenticationFilter normalRequestAuthenticationFilter() {
+        return new NormalRequestAuthenticationFilter(redisUtil);
+    }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
