@@ -2,6 +2,18 @@ server:
   port: 80
 
 spring:
+  redis:
+    host: 192.168.110.201
+    database: 6
+    port: 6379
+    connect-timeout: 3000
+    timeout: 3000
+    lettuce:
+      pool:
+        max-idle: 8
+        min-idle: 0
+        max-active: 8
+        max-wait: -1
   datasource:
     hikari:
       connection-test-query: select 1

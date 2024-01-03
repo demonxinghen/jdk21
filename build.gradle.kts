@@ -47,6 +47,7 @@ dependencies {
     implementation("com.github.ben-manes.caffeine:caffeine:3.1.8")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.apache.commons:commons-collections4:4.4")
+    implementation("com.google.guava:guava:33.0.0-jre")
 }
 
 tasks.withType<Test> {
