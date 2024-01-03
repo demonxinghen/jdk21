@@ -1,13 +1,16 @@
 package com.example.jdk21.filter;
 
 import com.example.jdk21.constant.CommonConstant;
+import com.example.jdk21.utils.CommonUtil;
 import com.example.jdk21.utils.RedisUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,18 +35,15 @@ public class NormalRequestAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String uri = request.getRequestURI();
-        for (String ignore : CommonConstant.FILTER_IGNORE_URLS) {
-            if (uri.startsWith(ignore)) {
-                return true;
-            }
-        }
-        return super.shouldNotFilter(request);
+        return CommonUtil.isIgnoreUrl(request.getRequestURI());
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws ServletException, IOException {
         String token = request.getHeader("token");
+        if (StringUtils.isBlank(token)) {
+            throw new InsufficientAuthenticationException("Invalid token");
+        }
         SecurityContextHolderStrategy strategy = SecurityContextHolder.getContextHolderStrategy();
         SecurityContext context = strategy.createEmptyContext();
         log.info("进入请求：{}", request.getRequestURI());

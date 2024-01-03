@@ -4,6 +4,7 @@ import com.example.jdk21.authorize.CustomAuthenticationProvider;
 import com.example.jdk21.authorize.CustomUserDetailsServiceImpl;
 import com.example.jdk21.authorize.TokenManager;
 import com.example.jdk21.authorize.UsernamePasswordLoginConfig;
+import com.example.jdk21.constant.CommonConstant;
 import com.example.jdk21.filter.NormalRequestAuthenticationFilter;
 import com.example.jdk21.handler.*;
 import com.example.jdk21.utils.RedisUtil;
@@ -47,9 +48,8 @@ public class WebSecurityConfig {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize ->
-                        //authorize.requestMatchers(CommonConstant.INTERCEPT_IGNORE_URLS).permitAll()
-                        //        .anyRequest().authenticated()
-                        authorize.anyRequest().permitAll()
+                        authorize.requestMatchers(CommonConstant.INTERCEPT_IGNORE_URLS).permitAll()
+                                .anyRequest().authenticated()
                 );
         httpSecurity.formLogin(AbstractHttpConfigurer::disable);
         httpSecurity.httpBasic(AbstractHttpConfigurer::disable);

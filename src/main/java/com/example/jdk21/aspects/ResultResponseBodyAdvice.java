@@ -2,6 +2,7 @@ package com.example.jdk21.aspects;
 
 import com.alibaba.fastjson2.JSON;
 import com.example.jdk21.pojo.Result;
+import com.example.jdk21.utils.CommonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.MethodParameter;
@@ -25,7 +26,7 @@ public class ResultResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
     public Object beforeBodyWrite(Object body, @NotNull MethodParameter returnType, @NotNull MediaType selectedContentType, @NotNull Class selectedConverterType, ServerHttpRequest request, @NotNull ServerHttpResponse response) {
-        if (!request.getURI().getPath().startsWith("/api")) {
+        if (CommonUtil.isIgnoreUrl(request.getURI().getPath())) {
             return body;
         }
         if (!(body instanceof Result)) {
