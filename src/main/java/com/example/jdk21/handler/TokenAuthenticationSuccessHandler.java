@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.example.jdk21.authorize.CustomUserDetails;
 import com.example.jdk21.authorize.TokenManager;
 import com.example.jdk21.pojo.Result;
+import com.example.jdk21.utils.RedisUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,6 +27,9 @@ public class TokenAuthenticationSuccessHandler implements AuthenticationSuccessH
     @Resource
     private TokenManager tokenManager;
 
+    @Resource
+    private RedisUtil redisUtil;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
@@ -36,6 +40,7 @@ public class TokenAuthenticationSuccessHandler implements AuthenticationSuccessH
         String refreshToken = tokenManager.generateToken(authentication);
         log.info("登录成功，登录人：" + JSON.toJSONString(userDetails));
         userDetails.setPassword(null);
+        redisUtil.set(userDetails.getToken(), authentication);
         response.getWriter().write(JSON.toJSONString(Result.success(userDetails)));
     }
 }

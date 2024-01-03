@@ -2,6 +2,7 @@ package com.example.jdk21.config;
 
 import com.alibaba.fastjson2.support.config.FastJsonConfig;
 import com.alibaba.fastjson2.support.spring6.http.converter.FastJsonHttpMessageConverter;
+import com.example.jdk21.constant.CommonConstant;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
@@ -72,7 +73,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // WebMvcConfigurer.super.addInterceptors(registry);
-        registry.addInterceptor(tokenInterceptor).excludePathPatterns("/v3/api-docs/**", "/webjars/**", "/doc.html");
+        registry.addInterceptor(tokenInterceptor).excludePathPatterns(CommonConstant.INTERCEPT_IGNORE_URLS);
     }
 
     /**
